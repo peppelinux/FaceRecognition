@@ -15,6 +15,11 @@ Run
 
 `find ./ciao/VIDEOSORVEGLIANZA_STORAGE/INGRESSO_ARMADIO_ETH/2019-03*  -type f -name "*jpg" -exec python3 face_detect.py {} \;`
 
+Better code and approaches
+--------------------------
+
+- https://github.com/ageitgey/face_recognition
+
 Resources
 ---------
 If you want to understand how the code works, the details are here:
