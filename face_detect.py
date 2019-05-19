@@ -29,16 +29,16 @@ def face_detection(cascPath, imagePath = sys.argv[1]):
         scaleFactor=1.1,
         minNeighbors=5,
         minSize=(30, 30)
+        # It is not used for a new cascade.
         #flags = cv2.CV_HAAR_SCALE_IMAGE
     )
     
     if not len(faces):
         return False, image
     msg = "Found {0} faces in {1} [{2}]".format(len(faces),
-                                             imagePath,
-                                             cascPath)
+                                                imagePath,
+                                                cascPath)
     print(msg)
-    
     # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
