@@ -36,6 +36,16 @@ def filter_dimensions(image, faces):
         sys.exit(1)
 
 
+def filter_n_faces(faces, n=1):
+    n_faces = len(faces)
+    if not n_faces:
+        print("No face detected")
+        return False, image
+    if n_faces > n:
+        print("Found more than 1 faces, invalid.")
+        sys.exit(1)
+
+
 def face_detection(casc, imagePath = sys.argv[1]):
     # Create the haar cascade
     faceCascade = cv2.CascadeClassifier(casc)
@@ -54,20 +64,13 @@ def face_detection(casc, imagePath = sys.argv[1]):
         minSize=(30, 30),
     )
 
-    n_faces = len(faces)
-
-    if not n_faces:
-        print("No face detected")
-        return False, image
 
     msg = "Found {0} faces in {1} [{2}]".format(len(faces),
                                                 imagePath,
                                                 casc)
     print(msg)
-    #  if n_faces > 1:
-        #  print("Found more than 1 faces, invalid.")
-        #  sys.exit(1)
 
+    filter_n_faces(faces)
     filter_dimensions(image, faces)
 
     # Draw a rectangle around the faces
