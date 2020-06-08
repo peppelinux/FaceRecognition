@@ -18,11 +18,11 @@ cascPaths = ("haarcascade_frontalface_default.xml",
 def face_detection(cascPath, imagePath = sys.argv[1]):
     # Create the haar cascade
     faceCascade = cv2.CascadeClassifier(cascPath)
-    
+
     # Read the image
     image = cv2.imread(imagePath)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
+
     # Detect faces in the image
     faces = faceCascade.detectMultiScale(
         gray,
@@ -32,7 +32,7 @@ def face_detection(cascPath, imagePath = sys.argv[1]):
         # It is not used for a new cascade.
         #flags = cv2.CV_HAAR_SCALE_IMAGE
     )
-    
+
     if not len(faces):
         return False, image
     msg = "Found {0} faces in {1} [{2}]".format(len(faces),
@@ -47,8 +47,8 @@ def face_detection(cascPath, imagePath = sys.argv[1]):
 for i in cascPaths:
     cascPath = os.path.join(casBasePath, i)
     imagePath = sys.argv[1]
-    cv2, image = face_detection(cascPath, imagePath)
-    if cv2:
-        cv2.imshow(imagePath, image)
-        cv2.waitKey(0)
+    res, image = face_detection(cascPath, imagePath)
+    if res:
+        res.imshow(imagePath, image)
+        res.waitKey(0)
         break

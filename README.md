@@ -6,7 +6,7 @@ Requirements
 It works with OpenCV3.
 
 ````
-pip install python-opencv
+pip install opencv-python
 ````
 
 Run
