@@ -55,6 +55,7 @@ def face_detection(casc, imagePath = sys.argv[1]):
     # Read the image
     image = cv2.imread(imagePath)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.equalizeHist(gray)
 
     # Detect faces in the image
     faces = faceCascade.detectMultiScale(
@@ -62,11 +63,8 @@ def face_detection(casc, imagePath = sys.argv[1]):
         scaleFactor=1.01,
         minNeighbors=5,
         # the size of the returning rectangle
-        #  minSize=(360, 360),
         minSize=(30, 30),
     )
-
-
     msg = "Found {0} faces in {1} [{2}]".format(len(faces),
                                                 imagePath,
                                                 casc)
@@ -80,21 +78,6 @@ def face_detection(casc, imagePath = sys.argv[1]):
         img = cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
     return cv2, image
-
-
-def thresh_callback(val=100):
-    threshold = val
-    # Detect edges using Canny
-    canny_output = cv2.Canny(src_gray, threshold, threshold * 2)
-    # Find contours
-    contours, hierarchy = cv2.findContours(canny_output, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    # Draw contours
-    drawing = np.zeros((canny_output.shape[0], canny_output.shape[1], 3), dtype=np.uint8)
-    for i in range(len(contours)):
-        color = (random.randint(0,256), random.randint(0,256), random.randint(0,256))
-        cv2.drawContours(drawing, contours, i, color, 2, cv2.LINE_8, hierarchy, 0)
-    # Show in a window
-    cv2.imshow('Contours', drawing)
 
 
 for i in cascPaths:
