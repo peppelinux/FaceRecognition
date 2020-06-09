@@ -10,12 +10,12 @@ import sys
 casBasePath = 'haarcascades'
 
 cascPaths = (
-             "haarcascade_frontalface_default.xml",
+             #  "haarcascade_frontalface_default.xml",
              #  "haarcascade_frontalcatface_extended.xml",
              #  "haarcascade_profileface.xml",
              #  "haarcascade_fullbody.xml",
              #  "haarcascade_upperbody.xml",
-             #  "haarcascade_frontalface_alt.xml",
+             "haarcascade_frontalface_alt.xml",
              #  "haarcascade_eye_tree_eyeglasses.xml",
              #  "haarcascade_eye.xml"
              )
@@ -29,7 +29,7 @@ def filter_dimensions(image, faces):
 
     rap_x = '{:01.3f}'.format( face_rap[0] / image_rap[0])
     rap_y = '{:01.3f}'.format( face_rap[1] / image_rap[1])
-    min_rapp = 0.5
+    min_rapp = 0.3
     if float(rap_x) < min_rapp or float(rap_x) < min_rapp:
         print("The Face is too small ({}) in relation to the size of "
               "the image {}. This must be at least {}".format(face_rap,
