@@ -1,5 +1,7 @@
 import cv2
 import os
+import random
+import numpy as np
 import sys
 
 # Get user supplied values
@@ -80,6 +82,21 @@ def face_detection(casc, imagePath = sys.argv[1]):
     return cv2, image
 
 
+def thresh_callback(val=100):
+    threshold = val
+    # Detect edges using Canny
+    canny_output = cv2.Canny(src_gray, threshold, threshold * 2)
+    # Find contours
+    contours, hierarchy = cv2.findContours(canny_output, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    # Draw contours
+    drawing = np.zeros((canny_output.shape[0], canny_output.shape[1], 3), dtype=np.uint8)
+    for i in range(len(contours)):
+        color = (random.randint(0,256), random.randint(0,256), random.randint(0,256))
+        cv2.drawContours(drawing, contours, i, color, 2, cv2.LINE_8, hierarchy, 0)
+    # Show in a window
+    cv2.imshow('Contours', drawing)
+
+
 for i in cascPaths:
     print('Processing: {}'.format(i))
     cascPath = os.path.join(casBasePath, i)
@@ -88,5 +105,5 @@ for i in cascPaths:
     if res:
         res.imshow(imagePath, image)
         res.waitKey(0)
-        #  cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
         #  break
