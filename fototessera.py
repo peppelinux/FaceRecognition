@@ -71,10 +71,10 @@ def face_detection(casc, image):
 def resize(image):
     # resize
     dst_width = 300
-    dim = (int((dst_width / image.shape[0]) * image.shape[1]), dst_width)
+    rap = (dst_width / image.shape[1])
+    dim = (int(rap * image.shape[1]), int(rap * image.shape[0]))
     print('Dimensions converted from ', image.shape[:2], 'to ', dim)
     resized = cv.resize(image, dim, interpolation = cv.INTER_AREA)
-
     image = resized
     return image
 
@@ -90,19 +90,19 @@ def is_fototessera(image, debug=False):
     gray = cv.equalizeHist(gray)
 
     middle_top = int(gray.shape[0]/2)
-
     left_border = int(gray.shape[1]/10)
     right_border = gray.shape[1] - int(gray.shape[1]/10)
 
     crop_left = gray[0:middle_top, 0:left_border]
-    crop_right = gray[0:middle_top, right_border:gray.shape[0]]
+    crop_right = gray[0:middle_top, right_border:gray.shape[1]]
 
     if crop_left.mean() > 250 and crop_right.mean() > 250:
         return 1, image
     else:
+        print('Noisy Background, invalidate.')
         if debug:
             # [y1:y2, x1:x2]
-            cv.imshow('crop', gray[0:middle_top, 0:gray.shape[0]])
+            cv.imshow('crop', gray[0:middle_top, 0:gray.shape[1]])
             #  cv.imshow('crop_left', crop_left)
             #  cv.imshow('crop_right', crop_right)
         return 0, image
@@ -133,7 +133,9 @@ if __name__ == '__main__':
         else:
             repr_invalid(image)
 
-    res, image = face_detection('haarcascades/haarcascade_frontalface_alt.xml',
+    #  casc = 'haarcascades/haarcascade_frontalface_alt.xml'
+    casc = 'haarcascades/haarcascade_frontalface_alt2.xml'
+    res, image = face_detection(casc,
                                 image)
     if debug:
         if res:
